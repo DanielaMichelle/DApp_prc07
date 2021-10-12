@@ -1,0 +1,53 @@
+﻿using System;
+@model IEnumerable<MVC_prc.Models.VENTAS>
+
+@{
+    ViewBag.Title = "Ventas";
+}
+
+<h2>Ventas</h2>
+
+<p>
+    @Html.ActionLink("Crear", "Crear")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codigo_cliente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigo_producto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pago_total)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.codigo_cliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.codigo_producto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pago_total)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Editar", new { id = item.codigo }) |
+                @Html.ActionLink("Detalle", "Detalle", new { id = item.codigo }) |
+                @Html.ActionLink("Eliminar", "Eliminar", new { id = item.codigo })
+            </td>
+        </tr>
+    }
+
+</table>

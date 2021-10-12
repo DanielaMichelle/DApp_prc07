@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="VentasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CLIENTES">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="direccion" Type="nvarchar" MaxLength="50" />
+    <Property Name="celular" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="edad" Type="numeric" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="PRODUCTO">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="precio" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="VENTAS">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="codigo_cliente" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="codigo_producto" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="fecha" Type="date" />
+    <Property Name="pago_total" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <Association Name="FK_VENTAS_CLIENTES">
+    <End Role="CLIENTES" Type="Self.CLIENTES" Multiplicity="0..1" />
+    <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTES">
+        <PropertyRef Name="codigo" />
+      </Principal>
+      <Dependent Role="VENTAS">
+        <PropertyRef Name="codigo_cliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VENTAS_PRODUCTO">
+    <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="0..1" />
+    <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRODUCTO">
+        <PropertyRef Name="codigo" />
+      </Principal>
+      <Dependent Role="VENTAS">
+        <PropertyRef Name="codigo_producto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="VentasModelStoreContainer">
+    <EntitySet Name="CLIENTES" EntityType="Self.CLIENTES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRODUCTO" EntityType="Self.PRODUCTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VENTAS" EntityType="Self.VENTAS" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_VENTAS_CLIENTES" Association="Self.FK_VENTAS_CLIENTES">
+      <End Role="CLIENTES" EntitySet="CLIENTES" />
+      <End Role="VENTAS" EntitySet="VENTAS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VENTAS_PRODUCTO" Association="Self.FK_VENTAS_PRODUCTO">
+      <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+      <End Role="VENTAS" EntitySet="VENTAS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

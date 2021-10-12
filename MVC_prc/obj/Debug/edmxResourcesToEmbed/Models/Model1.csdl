@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="VentasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CLIENTES">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="edad" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="VENTAS" Relationship="VentasModel.FK_VENTAS_CLIENTES" FromRole="CLIENTES" ToRole="VENTAS" />
+  </EntityType>
+  <EntityContainer Name="VentasEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CLIENTES" EntityType="Self.CLIENTES" />
+    <EntitySet Name="PRODUCTO" EntityType="VentasModel.PRODUCTO" />
+    <EntitySet Name="VENTAS" EntityType="VentasModel.VENTAS" />
+    <AssociationSet Name="FK_VENTAS_CLIENTES" Association="VentasModel.FK_VENTAS_CLIENTES">
+      <End Role="CLIENTES" EntitySet="CLIENTES" />
+      <End Role="VENTAS" EntitySet="VENTAS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VENTAS_PRODUCTO" Association="VentasModel.FK_VENTAS_PRODUCTO">
+      <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+      <End Role="VENTAS" EntitySet="VENTAS" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PRODUCTO">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="precio" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="VENTAS" Relationship="VentasModel.FK_VENTAS_PRODUCTO" FromRole="PRODUCTO" ToRole="VENTAS" />
+  </EntityType>
+  <EntityType Name="VENTAS">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="codigo" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="codigo_cliente" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="codigo_producto" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="fecha" Type="DateTime" Precision="0" />
+    <Property Name="pago_total" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="CLIENTES" Relationship="VentasModel.FK_VENTAS_CLIENTES" FromRole="VENTAS" ToRole="CLIENTES" />
+    <NavigationProperty Name="PRODUCTO" Relationship="VentasModel.FK_VENTAS_PRODUCTO" FromRole="VENTAS" ToRole="PRODUCTO" />
+  </EntityType>
+  <Association Name="FK_VENTAS_CLIENTES">
+    <End Type="VentasModel.CLIENTES" Role="CLIENTES" Multiplicity="0..1" />
+    <End Type="VentasModel.VENTAS" Role="VENTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTES">
+        <PropertyRef Name="codigo" />
+      </Principal>
+      <Dependent Role="VENTAS">
+        <PropertyRef Name="codigo_cliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VENTAS_PRODUCTO">
+    <End Type="VentasModel.PRODUCTO" Role="PRODUCTO" Multiplicity="0..1" />
+    <End Type="VentasModel.VENTAS" Role="VENTAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRODUCTO">
+        <PropertyRef Name="codigo" />
+      </Principal>
+      <Dependent Role="VENTAS">
+        <PropertyRef Name="codigo_producto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
